@@ -12,7 +12,7 @@ API RESTful desarrollada en Node.js, Express y TypeScript, con MongoDB y Mongoos
 - **Framework:** Express.js
 - **Base de Datos / ODM:** MongoDB / Mongoose
 - **Seguridad:** Bcryptjs y JSON Web Token (jsonwebtoken)
-- **Tooling:** Dotenv, CORS, ts-node-dev
+- **Tooling:** Dotenv, CORS, tsx
 
 ---
 
