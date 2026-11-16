@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import { authController } from './auth.controller';
+
+const router = Router();
+
+// Rutas públicas de autenticación
+router.post('/register', (req, res) => authController.register(req, res));
+router.post('/login', (req, res) => authController.login(req, res));
+
+export default router;
+
