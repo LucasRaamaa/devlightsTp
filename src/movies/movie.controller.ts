@@ -1,12 +1,8 @@
 import { Request, Response } from 'express';
-import { movieService } from './movie.service';
 import mongoose from 'mongoose';
+import { movieService } from './movie.service';
 
 export class MovieController {
-  /**
-   * GET /api/movies
-   * Permite filtrar por req.query (Extra)
-   */
   async getAll(req: Request, res: Response): Promise<void> {
     try {
       const { genero, director, minPuntaje } = req.query;
@@ -31,9 +27,6 @@ export class MovieController {
     }
   }
 
-  /**
-   * GET /api/movies/:id
-   */
   async getById(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params.id as string;
@@ -68,9 +61,6 @@ export class MovieController {
     }
   }
 
-  /**
-   * POST /api/movies
-   */
   async create(req: Request, res: Response): Promise<void> {
     try {
       const { titulo, director, genero, puntaje, anio } = req.body;
@@ -78,13 +68,12 @@ export class MovieController {
       if (!titulo || !director || !genero || puntaje === undefined) {
         res.status(400).json({
           success: false,
-          message: 'Faltan campos obligatorios: titulo, director, genero y puntaje son requeridos',
+          message: 'Campos obligatorios requeridos: titulo, director, genero, puntaje',
         });
         return;
       }
 
-      // Si viene usuario autenticado por token, asociamos la película a su creador (Extra: relación)
-      const createdBy = (req as any).user?.id;
+      const createdBy = req.user?.id ? new mongoose.Types.ObjectId(req.user.id) : undefined;
 
       const newMovie = await movieService.create({
         titulo,
@@ -101,7 +90,6 @@ export class MovieController {
         data: newMovie,
       });
     } catch (error: any) {
-      // Diferenciamos errores de validación (400) de errores de servidor (500)
       if (
         error.name === 'ValidationError' ||
         error.message.includes('Validación de negocio') ||
@@ -122,9 +110,6 @@ export class MovieController {
     }
   }
 
-  /**
-   * PUT /api/movies/:id
-   */
   async update(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params.id as string;
@@ -172,9 +157,6 @@ export class MovieController {
     }
   }
 
-  /**
-   * DELETE /api/movies/:id
-   */
   async delete(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params.id as string;

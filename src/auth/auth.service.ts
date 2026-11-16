@@ -26,13 +26,9 @@ export interface AuthResponse {
 }
 
 export class AuthService {
-  /**
-   * Registra un nuevo usuario hasheando la contraseña con Bcrypt
-   */
   async register(data: RegisterDTO): Promise<AuthResponse> {
     const emailNormalized = data.email.trim().toLowerCase();
 
-    // Validar si el usuario ya existe
     const existingUser = await User.findOne({ email: emailNormalized });
     if (existingUser) {
       throw new Error(`El email "${data.email}" ya está registrado`);
@@ -42,11 +38,9 @@ export class AuthService {
       throw new Error('La contraseña debe tener un mínimo de 6 caracteres');
     }
 
-    // Hasheo de contraseña con Salt (10 rondas)
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(data.password, salt);
 
-    // Crear y guardar el usuario
     const newUser = new User({
       nombre: data.nombre.trim(),
       email: emailNormalized,
@@ -55,8 +49,6 @@ export class AuthService {
     });
 
     const savedUser = await newUser.save();
-
-    // Generar JWT (sin incluir datos sensibles como el password)
     const token = this.generateToken(savedUser);
 
     return {
@@ -70,25 +62,19 @@ export class AuthService {
     };
   }
 
-  /**
-   * Autentica un usuario y genera un JWT
-   */
   async login(credentials: LoginDTO): Promise<AuthResponse> {
     const emailNormalized = credentials.email.trim().toLowerCase();
 
-    // Buscar usuario por email
     const user = await User.findOne({ email: emailNormalized });
     if (!user) {
       throw new Error('Credenciales inválidas: usuario o contraseña incorrectos');
     }
 
-    // Comparar password con el hash guardado
     const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
     if (!isPasswordValid) {
       throw new Error('Credenciales inválidas: usuario o contraseña incorrectos');
     }
 
-    // Generar JWT
     const token = this.generateToken(user);
 
     return {
@@ -102,9 +88,6 @@ export class AuthService {
     };
   }
 
-  /**
-   * Genera un JSON Web Token firmado con el secreto del .env
-   */
   private generateToken(user: IUser): string {
     const payload = {
       id: user._id.toString(),
@@ -120,4 +103,3 @@ export class AuthService {
 }
 
 export const authService = new AuthService();
-

@@ -2,19 +2,17 @@ import app from './app';
 import { ENV } from './config/env';
 import { connectDB } from './config/database';
 
-const startServer = async () => {
+const startServer = async (): Promise<void> => {
   try {
-    // 1. Conectar a MongoDB
     await connectDB();
 
-    // 2. Levantar el servidor Express
     app.listen(ENV.PORT, () => {
-      console.log(`🚀 Servidor ejecutándose en http://localhost:${ENV.PORT}`);
+      console.log(`Servidor activo en el puerto ${ENV.PORT}`);
     });
   } catch (error) {
-    console.error('❌ Error al inicializar el servidor:', error);
+    console.error('Error al iniciar el servidor:', error);
+    process.exit(1);
   }
 };
 
 startServer();
-

@@ -2,9 +2,6 @@ import { Request, Response } from 'express';
 import { authService } from './auth.service';
 
 export class AuthController {
-  /**
-   * POST /api/auth/register
-   */
   async register(req: Request, res: Response): Promise<void> {
     try {
       const { nombre, email, password, rol } = req.body;
@@ -12,7 +9,7 @@ export class AuthController {
       if (!nombre || !email || !password) {
         res.status(400).json({
           success: false,
-          message: 'Faltan campos obligatorios: nombre, email y password son requeridos',
+          message: 'Campos requeridos: nombre, email, password',
         });
         return;
       }
@@ -30,7 +27,11 @@ export class AuthController {
         data: result,
       });
     } catch (error: any) {
-      if (error.message.includes('ya está registrado') || error.message.includes('contraseña debe tener') || error.name === 'ValidationError') {
+      if (
+        error.message.includes('ya está registrado') ||
+        error.message.includes('contraseña debe tener') ||
+        error.name === 'ValidationError'
+      ) {
         res.status(400).json({
           success: false,
           message: error.message,
@@ -46,9 +47,6 @@ export class AuthController {
     }
   }
 
-  /**
-   * POST /api/auth/login
-   */
   async login(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
@@ -56,7 +54,7 @@ export class AuthController {
       if (!email || !password) {
         res.status(400).json({
           success: false,
-          message: 'Faltan credenciales: email y password son requeridos',
+          message: 'Credenciales requeridas: email, password',
         });
         return;
       }
@@ -87,4 +85,3 @@ export class AuthController {
 }
 
 export const authController = new AuthController();
-

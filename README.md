@@ -1,143 +1,134 @@
-# 🎬 API REST - Catálogo de Películas
-**Trabajo Práctico Integrador - Bootcamp Devlights 5.0 (Módulo Node.js)**
+# API REST - Catalogo de Peliculas
+Trabajo Practico Integrador - Bootcamp Devlights 5.0 (Modulo Node.js)
 
-API RESTful completa construida con **Node.js**, **Express** y **TypeScript**, utilizando **MongoDB** con **Mongoose** como base de datos. El proyecto implementa una arquitectura orientada a componentes y dividida en capas (rutas, controladores, servicios y acceso a datos), autenticación segura con **Bcrypt** y **JWT**, control de acceso por roles, validaciones de negocio y manejo semántico de errores HTTP.
-
----
-
-## 🚀 Tecnologías Utilizadas
-
-- **Entorno:** Node.js v18+
-- **Lenguaje:** TypeScript v5+
-- **Framework Web:** Express.js
-- **Base de Datos:** MongoDB con ODM Mongoose
-- **Seguridad y Criptografía:** Bcryptjs (hashing con salt) y JSON Web Token (JWT)
-- **Utilidades:** Dotenv, CORS, ts-node-dev (recarga en caliente para desarrollo)
+API RESTful desarrollada en Node.js, Express y TypeScript, con MongoDB y Mongoose como base de datos. El diseno sigue una arquitectura modular orientada a componentes y dividida en capas (rutas, controladores, servicios y acceso a datos). Incluye autenticacion mediante Bcrypt y JWT, control de acceso basado en roles (RBAC), validaciones de negocio y codigos de estado HTTP semanticos.
 
 ---
 
-## 📁 Arquitectura del Proyecto (Por Componentes y en Capas)
+## Tecnologias
 
-El proyecto adopta un diseño **modular / feature-based** donde cada dominio funcional agrupa sus capas:
+- **Runtime:** Node.js (v18+)
+- **Lenguaje:** TypeScript (v5+)
+- **Framework:** Express.js
+- **Base de Datos / ODM:** MongoDB / Mongoose
+- **Seguridad:** Bcryptjs y JSON Web Token (jsonwebtoken)
+- **Tooling:** Dotenv, CORS, ts-node-dev
+
+---
+
+## Arquitectura del Proyecto
+
+Estructura por componentes (feature-based) con separacion de responsabilidades en capas:
 
 ```text
 src/
-├── app.ts                        # Configuración de Express, middlewares y rutas globales
-├── server.ts                     # Punto de entrada y conexión a MongoDB
-│
+├── app.ts                        # Configuracion de middleware y registro de rutas
+├── server.ts                     # Entrada de la aplicacion y conexion a la base de datos
 ├── config/
-│   ├── database.ts               # Conexión Mongoose a MongoDB
-│   └── env.ts                    # Carga y tipado de variables de entorno
-│
+│   ├── database.ts               # Conexion Mongoose a MongoDB
+│   └── env.ts                    # Resolucion de variables de entorno tipadas
 ├── middlewares/
-│   ├── auth.middleware.ts        # Verificación y decodificación de JWT (Bearer Token)
-│   ├── role.middleware.ts        # Control de autorización por roles (ej. solo 'admin')
-│   └── logger.middleware.ts      # Extra: Logging de método HTTP y URL en consola
-│
+│   ├── auth.middleware.ts        # Validacion de token Bearer JWT
+│   ├── role.middleware.ts        # Verificacion de permisos por rol
+│   └── logger.middleware.ts      # Registro de peticiones entrantes (metodo y URL)
 ├── types/
-│   └── express.d.ts              # Declaración de tipos extendidos (req.user)
-│
-├── movies/                       # 📁 Componente Películas
-│   ├── movie.model.ts            # Capa de Datos: Esquema Mongoose de Película
-│   ├── movie.service.ts          # Capa de Servicio: Lógica y validaciones de negocio
-│   ├── movie.controller.ts       # Capa de Controlador: Manejo de req/res y try/catch
-│   └── movie.routes.ts           # Capa de Rutas: Endpoints y protección de acceso
-│
-└── auth/                         # 📁 Componente Autenticación / Usuarios
-    ├── user.model.ts             # Capa de Datos: Esquema de Usuario (roles, password)
-    ├── auth.service.ts           # Capa de Servicio: Hash con Bcrypt y emisión de JWT
-    ├── auth.controller.ts        # Capa de Controlador: Registro y Login
-    └── auth.routes.ts            # Capa de Rutas: /api/auth
+│   └── express.d.ts              # Extensiones de interfaces de Express (req.user)
+├── movies/                       # Componente de Peliculas
+│   ├── movie.model.ts            # Esquema y modelo Mongoose
+│   ├── movie.service.ts          # Reglas de negocio y operaciones de datos
+│   ├── movie.controller.ts       # Procesamiento de peticiones y respuestas HTTP
+│   └── movie.routes.ts           # Definicion de endpoints de peliculas
+└── auth/                         # Componente de Autenticacion
+    ├── user.model.ts             # Esquema de usuario
+    ├── auth.service.ts           # Hashing, comparacion de credenciales y firma de JWT
+    ├── auth.controller.ts        # Controladores de registro y login
+    └── auth.routes.ts            # Endpoints de autenticacion
 ```
 
 ---
 
-## ⚙️ Instalación y Configuración
+## Instalacion y Ejecucion
 
-### 1. Clonar el repositorio e instalar dependencias
+### 1. Clonar repositorio e instalar dependencias
 ```bash
-git clone <URL_DEL_REPOSITORIO>
+git clone https://github.com/LucasRaamaa/devlightsTp.git
 cd TpDevlights
 npm install
 ```
 
-### 2. Configurar variables de entorno
-Crear un archivo `.env` en la raíz del proyecto basándose en `.env.example`:
+### 2. Variables de entorno
+Crear el archivo `.env` tomando como base `.env.example`:
 
 ```env
 PORT=3000
 MONGO_URI=mongodb+srv://<usuario>:<password>@<cluster>.mongodb.net/catalogo_peliculas?retryWrites=true&w=majority
-JWT_SECRET=tu_clave_secreta_para_firmar_jwt
+JWT_SECRET=clave_secreta_para_firmar_jwt
 ```
 
-> **Nota:** Puedes utilizar una base de datos local (`mongodb://127.0.0.1:27017/catalogo_peliculas`) o una instancia de MongoDB Atlas.
+### 3. Comandos de ejecucion
 
-### 3. Ejecutar el proyecto
-
-- **Modo Desarrollo (con recarga automática):**
+- **Desarrollo:**
   ```bash
   npm run dev
   ```
 
-- **Compilar para producción (TypeScript a JavaScript):**
+- **Build de produccion:**
   ```bash
   npm run build
   ```
 
-- **Ejecutar en producción:**
+- **Iniciar en produccion:**
   ```bash
   npm start
   ```
 
-El servidor estará escuchando en `http://localhost:3000`.
-
 ---
 
-## 📌 Catálogo de Endpoints
+## Catalogo de Endpoints
 
-### 🔐 1. Autenticación (`/api/auth`)
+### 1. Autenticacion (`/api/auth`)
 
-| Método | Endpoint | Descripción | Requiere Token | Códigos HTTP |
+| Metodo | Endpoint | Descripcion | Auth | Codigos HTTP |
 | :--- | :--- | :--- | :---: | :---: |
-| `POST` | `/api/auth/register` | Registra un usuario (`user` o `admin`) | No | `201`, `400`, `500` |
-| `POST` | `/api/auth/login` | Inicia sesión y retorna token JWT | No | `200`, `400`, `401`, `500` |
+| `POST` | `/api/auth/register` | Registro de nuevo usuario (`user` o `admin`) | Publico | `201`, `400`, `500` |
+| `POST` | `/api/auth/login` | Autenticacion de usuario y emision de JWT | Publico | `200`, `400`, `401`, `500` |
 
-#### Payload de ejemplo - Registro:
+#### Payload de registro:
 ```json
 {
-  "nombre": "Lucas Administrador",
-  "email": "admin@cine.com",
-  "password": "PasswordSeguro123",
+  "nombre": "Lucas Rama",
+  "email": "lucas@example.com",
+  "password": "Password123",
   "rol": "admin"
 }
 ```
 
-#### Payload de ejemplo - Login:
+#### Payload de login:
 ```json
 {
-  "email": "admin@cine.com",
-  "password": "PasswordSeguro123"
+  "email": "lucas@example.com",
+  "password": "Password123"
 }
 ```
 
 ---
 
-### 🎥 2. Películas (`/api/movies`)
+### 2. Peliculas (`/api/movies`)
 
-| Método | Endpoint | Descripción | Requiere Token | Roles | Códigos HTTP |
+| Metodo | Endpoint | Descripcion | Auth | Roles | Codigos HTTP |
 | :--- | :--- | :--- | :---: | :---: | :---: |
-| `GET` | `/api/movies` | Obtiene todas las películas (soporta filtros) | No | Todos | `200`, `500` |
-| `GET` | `/api/movies/:id` | Obtiene una película por su ID | No | Todos | `200`, `400`, `404`, `500` |
-| `POST` | `/api/movies` | Crea una nueva película | **Sí** | `user` / `admin` | `201`, `400`, `401`, `500` |
-| `PUT` | `/api/movies/:id` | Modifica una película por su ID | **Sí** | `user` / `admin` | `200`, `400`, `401`, `404`, `500` |
-| `DELETE` | `/api/movies/:id` | Elimina una película por su ID | **Sí** | **Solo `admin`** | `200`, `400`, `401`, `403`, `404`, `500` |
+| `GET` | `/api/movies` | Listar peliculas (soporta filtros por query) | Publico | Todos | `200`, `500` |
+| `GET` | `/api/movies/:id` | Obtener pelicula por ID | Publico | Todos | `200`, `400`, `404`, `500` |
+| `POST` | `/api/movies` | Crear pelicula | Bearer JWT | `user`, `admin` | `201`, `400`, `401`, `500` |
+| `PUT` | `/api/movies/:id` | Actualizar pelicula | Bearer JWT | `user`, `admin` | `200`, `400`, `401`, `404`, `500` |
+| `DELETE` | `/api/movies/:id` | Eliminar pelicula | Bearer JWT | Solo `admin` | `200`, `400`, `401`, `403`, `404`, `500` |
 
-#### Payload de ejemplo - Crear / Modificar Película:
+#### Payload de creacion / modificacion:
 ```json
 {
   "titulo": "Interestelar",
   "director": "Christopher Nolan",
-  "genero": "Ciencia Ficción",
+  "genero": "Ciencia Ficcion",
   "puntaje": 9.5,
   "anio": 2014
 }
@@ -145,36 +136,30 @@ El servidor estará escuchando en `http://localhost:3000`.
 
 ---
 
-## 🌟 Extras y Buenas Prácticas Implementadas (+10 Puntos)
+## Funcionalidades y Reglas de Negocio
 
 1. **Filtros por Query Params (`req.query`):**
-   - Filtrado dinámico en `GET /api/movies?genero=Accion&minPuntaje=8&director=Nolan`.
+   - Busqueda combinada en `GET /api/movies?genero=Ciencia%20Ficcion&minPuntaje=8&director=Nolan`.
 2. **Control de Acceso por Roles (RBAC):**
-   - El endpoint `DELETE /api/movies/:id` está protegido con el middleware `requireAdmin`: los usuarios con rol `user` reciben `403 Forbidden`, y solo usuarios con rol `admin` pueden concretar la eliminación.
-3. **Relación entre Modelos:**
-   - Cada película almacena la referencia del usuario que la registró (`createdBy`), accesible y poblada (`populate`) en las respuestas.
+   - Restriccion en `DELETE /api/movies/:id` mediante middleware `requireAdmin` (retorna `403 Forbidden` si el usuario no posee rol `admin`).
+3. **Relacion entre Modelos:**
+   - La entidad `Movie` asocia al usuario creador (`createdBy: ObjectId`) y expone los datos poblados (`populate`).
 4. **Middleware de Logging:**
-   - Se registra en consola en tiempo real la fecha/hora, método HTTP y URL de cada petición entrante.
-5. **Validaciones de Reglas de Negocio en Capa de Servicio:**
-   - El puntaje debe estar obligatoriamente entre **1 y 10**.
-   - No se permiten películas con títulos duplicados (búsqueda insensible a mayúsculas/minúsculas).
-   - El año de estreno debe ser válido (no anterior a 1888 ni superior a fechas incoherentes).
+   - Registro en consola de marca temporal, metodo HTTP y URL de cada solicitud.
+5. **Validaciones en Capa de Servicio:**
+   - Rango de puntaje restringido entre 1 y 10.
+   - Unicidad de titulo de pelicula (insensible a mayusculas/minusculas).
+   - Validacion de anio de estreno valido (a partir de 1888).
 
 ---
 
-## 🧪 Pruebas con Thunder Client
+## Coleccion de Pruebas (Thunder Client)
 
-El proyecto incluye el archivo **`thunder-collection.json`** en la raíz. Para utilizarlo:
+El archivo `thunder-collection.json` se encuentra en la raiz del repositorio listo para ser importado en la extension Thunder Client de VS Code:
 
-1. Instalar la extensión **Thunder Client** en VS Code.
-2. Abrir la pestaña de Thunder Client y seleccionar **Collections > Import**.
-3. Seleccionar el archivo `thunder-collection.json`.
-4. La colección incluye requests organizados para:
-   - Registro y Login exitoso.
-   - CRUD completo de películas.
-   - Casos de error esperados:
-     - `400 Bad Request`: datos faltantes o validaciones de negocio fallidas.
-     - `401 Unauthorized`: acceso a rutas protegidas sin token o token expirado.
-     - `403 Forbidden`: intento de eliminación por usuario sin rol `admin`.
-     - `404 Not Found`: búsqueda de ID inexistente.
-
+- Casos de exito (200, 201)
+- Casos de error controlados:
+  - `400 Bad Request`: datos ausentes o violacion de reglas de negocio
+  - `401 Unauthorized`: ausencia o invalidez de token JWT
+  - `403 Forbidden`: operacion no autorizada para rol regular
+  - `404 Not Found`: recurso inexistente por ID
