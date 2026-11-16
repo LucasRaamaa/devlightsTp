@@ -1,32 +1,78 @@
-# Dependencias
+# ==========================================
+# Dependencias y paquetes
+# ==========================================
 node_modules/
-
-# Entorno y Secretos
-.env
-.env.local
-.env.*.local
-!.env.example
-
-# Compilación y build TypeScript
-dist/
-build/
-
-# Logs
-logs/
-*.log
+package-lock.json.backup
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Documentación y archivos internos de trabajo
-/docs/
+# ==========================================
+# Secretos, credenciales y variables de entorno
+# (Requisito 10 del TP: NUNCA subir claves reales)
+# ==========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+
+# ==========================================
+# Archivos de build y compilación TypeScript
+# ==========================================
+dist/
+build/
+*.tsbuildinfo
+
+# ==========================================
+# Documentación interna del bootcamp y roadmap
+# (Excluidos a pedido para mantener el repo limpio)
+# ==========================================
 docs/
+/docs/
 roadmap.md
 ROADMAP.md
+*.pptx
+*.pdf
 
-# Sistema operativo y editores
+# ==========================================
+# Logs y archivos temporales de ejecución
+# ==========================================
+logs/
+*.log
+*.tmp
+*.temp
+
+# ==========================================
+# Bases de datos locales o dumps
+# ==========================================
+*.sqlite
+*.sqlite3
+*.db
+dump/
+
+# ==========================================
+# Cobertura de pruebas (Coverage)
+# ==========================================
+coverage/
+.nyc_output/
+
+# ==========================================
+# Sistema operativo y configuración de editores
+# ==========================================
 .DS_Store
 Thumbs.db
+Desktop.ini
 .vscode/
+!.vscode/extensions.json
 .idea/
-
+*.sublime-project
+*.sublime-workspace
