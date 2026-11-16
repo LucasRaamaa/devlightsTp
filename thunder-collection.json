@@ -1,0 +1,170 @@
+{
+  "clientName": "Thunder Client",
+  "collectionName": "Catálogo de Películas API - TP Integrador",
+  "collectionId": "tp-devlights-movies-collection",
+  "dateExported": "2026-11-16",
+  "version": "1.1",
+  "folders": [
+    {
+      "name": "1. Autenticación (Auth)",
+      "id": "folder-auth"
+    },
+    {
+      "name": "2. Películas (Movies) - CRUD",
+      "id": "folder-movies-crud"
+    },
+    {
+      "name": "3. Casos de Error (400, 401, 403, 404)",
+      "id": "folder-errors"
+    }
+  ],
+  "requests": [
+    {
+      "name": "POST Registrar Usuario Regular",
+      "method": "POST",
+      "url": "http://localhost:3000/api/auth/register",
+      "folder": "folder-auth",
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"nombre\": \"Lucas Alumno\",\n  \"email\": \"lucas@ejemplo.com\",\n  \"password\": \"123456\",\n  \"rol\": \"user\"\n}"
+      }
+    },
+    {
+      "name": "POST Registrar Usuario Administrador",
+      "method": "POST",
+      "url": "http://localhost:3000/api/auth/register",
+      "folder": "folder-auth",
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"nombre\": \"Admin Bootcamp\",\n  \"email\": \"admin@ejemplo.com\",\n  \"password\": \"admin123\",\n  \"rol\": \"admin\"\n}"
+      }
+    },
+    {
+      "name": "POST Iniciar Sesión (Login)",
+      "method": "POST",
+      "url": "http://localhost:3000/api/auth/login",
+      "folder": "folder-auth",
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"admin@ejemplo.com\",\n  \"password\": \"admin123\"\n}"
+      }
+    },
+    {
+      "name": "GET Listar todas las películas (200 OK)",
+      "method": "GET",
+      "url": "http://localhost:3000/api/movies",
+      "folder": "folder-movies-crud"
+    },
+    {
+      "name": "GET Filtrar películas por Query Params (Extra)",
+      "method": "GET",
+      "url": "http://localhost:3000/api/movies?genero=Ciencia%20Ficcion&minPuntaje=8",
+      "folder": "folder-movies-crud"
+    },
+    {
+      "name": "POST Crear nueva película (201 Created)",
+      "method": "POST",
+      "url": "http://localhost:3000/api/movies",
+      "folder": "folder-movies-crud",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{TOKEN_AQUI}}"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"titulo\": \"Inception\",\n  \"director\": \"Christopher Nolan\",\n  \"genero\": \"Ciencia Ficcion\",\n  \"puntaje\": 9,\n  \"anio\": 2010\n}"
+      }
+    },
+    {
+      "name": "GET Película por ID (200 OK)",
+      "method": "GET",
+      "url": "http://localhost:3000/api/movies/ID_DE_LA_PELICULA",
+      "folder": "folder-movies-crud"
+    },
+    {
+      "name": "PUT Actualizar película (200 OK)",
+      "method": "PUT",
+      "url": "http://localhost:3000/api/movies/ID_DE_LA_PELICULA",
+      "folder": "folder-movies-crud",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{TOKEN_AQUI}}"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"puntaje\": 10\n}"
+      }
+    },
+    {
+      "name": "DELETE Eliminar película (Solo Admin - 200 OK)",
+      "method": "DELETE",
+      "url": "http://localhost:3000/api/movies/ID_DE_LA_PELICULA",
+      "folder": "folder-movies-crud",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{TOKEN_ADMIN_AQUI}}"
+        }
+      ]
+    },
+    {
+      "name": "POST Error 400 - Validación de negocio (Puntaje fuera de rango)",
+      "method": "POST",
+      "url": "http://localhost:3000/api/movies",
+      "folder": "folder-errors",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{TOKEN_AQUI}}"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"titulo\": \"Pelicula Mala\",\n  \"director\": \"Desconocido\",\n  \"genero\": \"Comedia\",\n  \"puntaje\": 15\n}"
+      }
+    },
+    {
+      "name": "POST Error 401 - Intento de creación sin Token",
+      "method": "POST",
+      "url": "http://localhost:3000/api/movies",
+      "folder": "folder-errors",
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"titulo\": \"Sin Permiso\",\n  \"director\": \"Anonimo\",\n  \"genero\": \"Drama\",\n  \"puntaje\": 7\n}"
+      }
+    },
+    {
+      "name": "DELETE Error 403 - Intento de eliminación con usuario no admin",
+      "method": "DELETE",
+      "url": "http://localhost:3000/api/movies/ID_DE_LA_PELICULA",
+      "folder": "folder-errors",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{TOKEN_USER_NORMAL_AQUI}}"
+        }
+      ]
+    },
+    {
+      "name": "GET Error 404 - Película no encontrada",
+      "method": "GET",
+      "url": "http://localhost:3000/api/movies/650000000000000000000000",
+      "folder": "folder-errors"
+    },
+    {
+      "name": "POST Error 401 - Login con contraseña incorrecta",
+      "method": "POST",
+      "url": "http://localhost:3000/api/auth/login",
+      "folder": "folder-errors",
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"admin@ejemplo.com\",\n  \"password\": \"contrasenia_erronea\"\n}"
+      }
+    }
+  ]
+}
+
