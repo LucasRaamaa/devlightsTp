@@ -77,6 +77,11 @@ JWT_SECRET=clave_secreta_para_firmar_jwt
   npm run seed
   ```
 
+- **Ejecutar suite de pruebas automatizadas:**
+  ```bash
+  npm test
+  ```
+
 - **Build de produccion:**
   ```bash
   npm run build
